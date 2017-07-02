@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UAF Cyber Security Club</title>
+  </head>
+  <body>
+    {% block navbar %}
+    <nav class="navbar navbar-inverse">
+      <div class="container-fluid">
+        <div class="navbar-head">
+          <a class="navbar-brand" href="{{ url_for('index') }}">Cyber Security Club</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Links
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="https://groups.google.com/a/alaska.edu/forum/?hl=en#!forum/uaf-cybersecurity-club">Google Group</a></li>
+              <li><a href="https://drive.google.com/folderview?id=0B8wWpU2kxwL2S3RUempTMWVkU2M&usp=sharing">Google Drive Folder</a></li>
+              <li><a href="https://vc.csc.uaf.edu/">vCenter</a></li>
+              <li><a href="https://orgsync.com/122183/chapter">OrgSync</a></li>
+              <li><a href="https://github.com/uafcsc">GitHub</a></li>
+              <li><a href="https://uafcsc.slack.com/signup">Slack</a></li>
+              <li><a href="https://twitter.com/uafcsc">Twitter</a></li>
+            </ul>
+          </li>
+          {# Add any additional installed modules to the navbar #}
+          {% for mod in modules %}
+          <li><a href="{{ mod.href }}">{{ mod.name }}</a></li>
+          {% endfor %}
+        <!-- End Navbar ul -->
+        </ul>
+      <!-- End container-fluid -->
+      </div>
+    <!-- End Navbar-->
+    </nav>
+    {% endblock %}
+    {# Content from child pages #}
+    {% block body %}
+    {% endblock %}
+  </body>
+</html>
