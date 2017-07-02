@@ -3,3 +3,11 @@
   margin-right: auto;
   max-width: 1000px;
 }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #222;
+  color: #9d9d9d;
+}
