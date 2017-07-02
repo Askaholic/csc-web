@@ -10,7 +10,7 @@ def index():
     mods = []
     for mod in app.iter_blueprints():
         mods.append({
-            "href": mod.get_navbar_href(),
-            "name": mod.get_navbar_name()
+            "nav_entry": mod.get_navbar_entry()
         })
-    return render_template("base.html", modules=mods)
+        print("Adding: {}".format(mod.get_navbar_entry()))
+    return render_template("index.html", modules=mods)
