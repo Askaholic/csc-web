@@ -39,6 +39,9 @@
                 {% endfor %}
               <!-- End Navbar ul -->
               </ul>
+              {% for mod in modules %}
+                {{ mod.nav_extension|safe }}
+              {% endfor %}
             <!-- End container-fluid -->
             </div>
           <!-- End centered-wrapper -->
