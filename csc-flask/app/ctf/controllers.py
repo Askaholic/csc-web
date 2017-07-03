@@ -30,19 +30,52 @@ def index():
 @mod.route('/login', methods=['GET', 'POST'])
 def login():
     user = session.get("user")
+    error = None
     if user is not None:
         return render_template("ctf/loggedin.html", username=user)
-    else:
-        user = request.args.get("user")
-        pasw = request.args.get("pass")
+    elif request.method == "POST":
+        create = request.form.get("create")
+        user = request.form.get("user")
+        pasw = request.form.get("pass")
+        conf = request.form.get("conf")
 
-        if pasw is not None:
-            # Hash password (sha256 to make sure password length does not exceed 72)
-            hashed = bcrypt.hashpw(
-                base64.b64encode(hashlib.sha256(pasw.encode()).digest()),
-                bcrypt.gensalt()
-            )
-    return render_template('ctf/login.html')
+        if pasw is None or pasw == "":
+            error = "Password must not be empty!"
+        elif create is True:
+            if User.query.filterby(username=user).first() is not None:
+                error = "That username is taken!"
+            elif pasw != conf:
+                error = "Your passwords do not match!"
+            else:
+                # Hash password (sha256 to make sure password length does not exceed 72)
+                hash = bcrypt.hashpw(
+                    base64.b64encode(hashlib.sha256(pasw.encode()).digest()),
+                    bcrypt.gensalt()
+                )
+                newUser = User(
+                    username=user,
+                    password=pasw
+                )
+                db.session.add(newUser)
+                try:
+                    db.session.commit()
+                except:
+                    db.session.rollback()
+                    error = "Database failure! Please contact an administrator"
+        elif create is False or create is None:
+            # Check hash
+            db_user = User.query.filter_by(username=user).first()
+            if db_user is None:
+                error = "Login failed, please try again."
+            elif bcrypt.checkpw((hashlib.sha256(pasw.encode(), db_user.hash))):
+                session['user'] = user
+                return render_template("ctf/loggedin.html")
+            else:
+                error = "Login failed, please try again"
+    if error is not None:
+        return render_template('ctf/login.html', error=error)
+    else:
+        return render_template('ctf/login.html')
 
 
 @mod.route('/challenges')

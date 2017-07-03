@@ -29,6 +29,9 @@ html, body {
   -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
+.form-error-container {
+    max-width: 500px;
+}
 .form-cyber {
   background-color: #0c5493;
   border-color: #083964;
