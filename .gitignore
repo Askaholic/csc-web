@@ -1,3 +1,6 @@
 # Python3 compiled files
 *.pyc
 */__pycache__
+
+# Auto generated files
+csc-flask/app/templates/layout.html

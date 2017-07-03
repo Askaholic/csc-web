@@ -4,7 +4,7 @@
 
 # Controllers for test module
 
-from flask import Blueprint, url_for
+from flask import Blueprint, render_template, url_for
 
 class TestMod(Blueprint):
     def get_navbar_extension(self):
@@ -17,7 +17,7 @@ class TestMod(Blueprint):
                             </button>
                         </div>
                     </div>
-                </form>'''.format(url_for("test.index"))
+                </form>'''
 
 mod = TestMod('test', __name__, url_prefix='/test')
 

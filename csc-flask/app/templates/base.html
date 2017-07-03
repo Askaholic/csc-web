@@ -12,12 +12,16 @@
   </head>
   <body>
     <div class="footer-expanding-wrapper">
+      {# Escape jinja2 code #}
+      {% raw %}
       {% block navbar %}
+      {% endraw %}
       <nav class="navbar navbar-cyber">
         <div class="centered-wrapper">
           <div class="container-fluid">
             <div class="navbar-head">
-              <a class="navbar-brand" href="{{ url_for('index') }}">Cyber Security Club</a>
+              {# Escape jinja2 code #}
+              <a class="navbar-brand" href="{% raw %}{{ url_for('index') }}{% endraw %}">Cyber Security Club</a>
             </div>
             <ul class="nav navbar-nav">
               <li class="dropdown">
@@ -49,10 +53,13 @@
         </div>
       <!-- End Navbar-->
       </nav>
+      {# Escape jinja2 code #}
+      {% raw %}
       {% endblock %}
       {# Content from child pages #}
       {% block body %}
       {% endblock %}
+      {% endraw %}
     <!-- End expanding wrapper -->
     </div>
     <footer class="footer navbar-cyber">
