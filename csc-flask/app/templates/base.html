@@ -40,12 +40,16 @@
               <li><a href="mailto:csc.uaf@alaska.edu">Contact</a></li>
               {# Add any additional installed modules to the navbar #}
               {% for mod in modules %}
+                {% raw %}{% block {% endraw %}{{ mod.name }}_entry{% raw %} %}{% endraw %}
                 {{ mod.nav_entry|safe }}
+                {% raw %}{% endblock %}{% endraw %}
               {% endfor %}
             <!-- End Navbar ul -->
             </ul>
             {% for mod in modules %}
+              {% raw %}{% block {% endraw %}{{ mod.name }}_extension{% raw %} %}{% endraw %}
               {{ mod.nav_extension|safe }}
+              {% raw %}{% endblock %}{% endraw %}
             {% endfor %}
           <!-- End container-fluid -->
           </div>

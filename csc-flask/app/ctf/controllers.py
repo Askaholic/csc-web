@@ -5,6 +5,7 @@
 # Controllers for pages in ctf module
 
 from . import mod
+from app import socketio
 from flask import render_template
 
 @mod.route('/')
@@ -17,8 +18,20 @@ def login():
 
 @mod.route('/challenges')
 def challenges():
-    return ""
+    challenges = [
+        {"name": "Dope-CTF"},
+        {"name": "Cyber"}
+    ]
+    return render_template('ctf/challenges.html', challenges=challenges)
 
 @mod.route('/scoreboard')
 def scoreboard():
-    return ""
+    challenges = [
+        {"name": "Dope-CTF"},
+        {"name": "Cyber"}
+    ]
+    return render_template('ctf/scoreboard.html', challenges=challenges)
+
+@socketio.on('my event')
+def handle_message(data):
+    print('Received message: ' + str(data))

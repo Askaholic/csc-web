@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block ctf_entry %}
+<li class="dropdown active">
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#">CTF
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    <li><a href="{{ url_for('.login') }}">Login</a></li>
+    <li><a href="{{ url_for('.challenges') }}">Challenges</a></li>
+    <li><a href="{{ url_for('.scoreboard') }}">Scoreboard</a></li>
+  </ul>
+</li>
+{% endblock %}
+{% block body %}
+<div class="centered-wrapper">
+  <div class="col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+      <li class="active"><a href="#">Challenges</a></li>
+      {% for ch in challenges %}
+      <li><a href="#">{{ ch.name }}</a></li>
+      {% endfor %}
+    </ul>
+  <!-- End first column -->
+  </div>
+  <div class="col-md-9">
+    <h1>Challenges</h1>
+    <p>Select a challenge to begin.</p>
+  <!-- End second column -->
+  </div>
+<!-- End centered-wrapper -->
+</div>
+{% endblock %}

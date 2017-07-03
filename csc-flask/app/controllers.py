@@ -8,3 +8,9 @@ from flask import render_template
 @app.route("/")
 def index():
     return render_template("index.html")
+
+#
+# @app.route('/ldap')
+# @ldap.login_required
+# def ldap_protected():
+#     return 'Success!'

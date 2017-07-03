@@ -4,8 +4,8 @@
 
 # Main flask launch script
 
-from app import app as application
+from app import socketio, app
 
 if __name__ == "__main__":
-    application.debug = True
-    application.run()
+    app.debug = True
+    socketio.run(app)
