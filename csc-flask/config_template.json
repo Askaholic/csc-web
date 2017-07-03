@@ -1,0 +1,7 @@
+{
+  "LDAP_BASE_DN": "OU=users,dc=example,dc=com",
+  "LDAP_USERNAME": "CN=user,OU=Users,DC=example,DC=com",
+  "LDAP_PASSWORD": "",
+  "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+  "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"
+}

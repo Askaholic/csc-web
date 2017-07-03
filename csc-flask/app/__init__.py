@@ -7,24 +7,24 @@
 from flask import Flask, render_template
 # from flask_simpleldap import LDAP
 from flask_socketio import SocketIO
+from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, FileSystemLoader
 import os
 
 
 app = Flask(__name__.split('.')[0])
+app.config.from_json("../config.json")
+
+db = SQLAlchemy(app)
 socketio = SocketIO(app)
-
-app.config['LDAP_BASE_DN'] = 'OU=users,dc=csc,dc=uaf,dc=edu'
-app.config['LDAP_USERNAME'] = 'CN=user,OU=Users,DC=csc,DC=uaf,DC=edu'
-app.config['LDAP_PASSWORD'] = 'password'
-
 # ldap = LDAP(app)
 
 from .ctf import mod as mod_ctf
 app.register_blueprint(mod_ctf)
 
 from . import controllers
-
+from .ctf.models import *
+db.create_all()
 
 # generate the layout.html template based on which modules are installed
 @app.before_first_request
