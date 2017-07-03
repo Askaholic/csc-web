@@ -10,10 +10,14 @@ from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, FileSystemLoader
 import os
+import uuid
 
 
 app = Flask(__name__.split('.')[0])
 app.config.from_json("../config.json")
+if app.secret_key is None:
+    app.secret_key = uuid.uuid4().hex
+
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app)

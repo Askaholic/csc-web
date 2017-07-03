@@ -80,6 +80,11 @@ def login():
     else:
         return render_template('ctf/login.html')
 
+@mod.route('/logout')
+def logout():
+    session.clear()
+    return "You've been logged out"
+
 
 @mod.route('/challenges')
 def challenges():
