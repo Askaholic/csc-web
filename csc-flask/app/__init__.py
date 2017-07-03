@@ -8,7 +8,17 @@ from flask import Flask, render_template
 from jinja2 import Environment, FileSystemLoader
 import os
 
+
+app = Flask(__name__.split('.')[0])
+
+from .ctf import mod as mod_ctf
+app.register_blueprint(mod_ctf)
+
+from . import controllers
+
+
 # generate the layout.html template based on which modules are installed
+@app.before_first_request
 def create_layout_template():
     template_folder = os.path.join(os.path.dirname(__file__), app.template_folder)
     env = Environment(loader=FileSystemLoader(template_folder))
@@ -23,12 +33,3 @@ def create_layout_template():
         })
     with open(os.path.join(template_folder, "layout.html"), "w") as layout_template_file:
         layout_template_file.write(template.render(modules=mods))
-
-app = Flask(__name__.split('.')[0])
-
-from .test.controllers import mod as mod_test
-app.register_blueprint(mod_test)
-
-create_layout_template()
-
-from . import controllers

@@ -1,13 +1,11 @@
 html, body {
   height: 100%;
 }
-
 .centered-wrapper {
   margin-left: auto;
   margin-right: auto;
   max-width: 1000px;
 }
-
 .footer-expanding-wrapper {
   min-height: 100%;
   height: auto;
@@ -16,14 +14,12 @@ html, body {
   /* Pad bottom by footer height */
   padding: 0 0 20px;
 }
-
 .footer {
   width: 100%;
   height: 20px;
   color: #9fb3c4;
   border: 1px solid;
 }
-
 .navbar-cyber {
   background-color: #0c5493;
   border-color: #083964;
