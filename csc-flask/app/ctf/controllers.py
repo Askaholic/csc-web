@@ -41,8 +41,8 @@ def login():
 
         if pasw is None or pasw == "":
             error = "Password must not be empty!"
-        elif create is True:
-            if User.query.filterby(username=user).first() is not None:
+        elif create == "on":
+            if User.query.filter_by(username=user).first() is not None:
                 error = "That username is taken!"
             elif pasw != conf:
                 error = "Your passwords do not match!"
@@ -54,14 +54,17 @@ def login():
                 )
                 newUser = User(
                     username=user,
-                    password=pasw
+                    password=hash.decode()
                 )
                 db.session.add(newUser)
                 try:
                     db.session.commit()
+                    session['user'] = user
+                    return render_template("ctf/loggedin.html")
                 except:
                     db.session.rollback()
                     error = "Database failure! Please contact an administrator"
+                    raise
         elif create is False or create is None:
             # Check hash
             db_user = User.query.filter_by(username=user).first()
