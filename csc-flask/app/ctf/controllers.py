@@ -9,4 +9,16 @@ from flask import render_template
 
 @mod.route('/')
 def index():
-    return render_template('ctf/index.html')
+    return ""
+
+@mod.route('/login')
+def login():
+    return render_template('ctf/login.html')
+
+@mod.route('/challenges')
+def challenges():
+    return ""
+
+@mod.route('/scoreboard')
+def scoreboard():
+    return ""
