@@ -6,6 +6,7 @@
 
 from flask import Blueprint, url_for
 
+
 class CTFBlueprint(Blueprint):
     def get_navbar_entry(self):
         navbar_entry = '''
@@ -20,8 +21,9 @@ class CTFBlueprint(Blueprint):
 
             </ul>
         </li>
-        '''.format(url_for(".login"), url_for(".challenges"), url_for(".scoreboard"))
+        '''.format(url_for("ctf.login"), url_for("ctf.challenges"), url_for("ctf.scoreboard"))
         return navbar_entry
+
 
 mod = CTFBlueprint("ctf", __name__, url_prefix="/ctf", template_folder="templates")
 
