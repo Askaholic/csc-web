@@ -1,8 +1,30 @@
-var numConnectors = Math.ceil(Math.random() * 6 + 3);
+var numConnectors = Math.floor(Math.random() * 6 + 4);
+var allPaths = []
 
 $(document).ready(
   function() {
     registerHandlers();
+    for(var i = 0; i < 4; i++) {
+      for(var c=0; c < numConnectors; c++) {
+        var path = [];
+        if(c == 0) {
+          path = generatePath(5, Math.floor(Math.random() * 2) + 1, [0, 1, 2])
+        }
+        else if(c == numConnectors - 1) {
+          path = generatePath(5, Math.floor(Math.random() * 2) + 6, [6, 7, 0])
+        }
+        else if (c < (numConnectors - 1) / 2 ){
+          path = generatePath(5, 0, [0, 1, 2])
+        }
+        else if (c > (numConnectors - 1) / 2 ){
+          path = generatePath(5, 0, [6, 7, 0])
+        }
+        else {
+          path = generatePath(5, 0, [6, 7, 0, 1, 2])
+        }
+        allPaths.push(path);
+      }
+    }
     updateCanvas(document.getElementById("background"));
   }
 );
@@ -34,13 +56,13 @@ function registerResizeHandler() {
 
 function updateCanvas(canvas) {
   setupCanvas(canvas);
-  ctx = canvas.getContext("2d");
-  h = canvas.height;
-  w = canvas.width;
-  circuitH = h / 5;
-  circuitW = h / 5;
-  cornerH = circuitH / 10;
-  cornerW = circuitW / 10;
+  const ctx = canvas.getContext("2d");
+  const h = canvas.height;
+  const w = canvas.width;
+  const circuitH = h / 5;
+  const circuitW = h / 5;
+  const cornerH = circuitH / 10;
+  const cornerW = circuitW / 10;
   ctx.lineWidth = 5;
   drawCircuitCenter(canvas, circuitW, circuitH, cornerW, cornerH);
   ctx.lineWidth = 3;
@@ -58,15 +80,15 @@ function circle(ctx, centerX, centerY, radius) {
 }
 
 function setupCanvas(canvas) {
-  h = $( window ).height();
-  w = $( window ).width();
+  const h = $( window ).height();
+  const w = $( window ).width();
 
   canvas.height = h;
   canvas.style.height = h;
   canvas.width = w;
   canvas.style.width = w;
 
-  ctx = canvas.getContext("2d")
+  const ctx = canvas.getContext("2d")
   ctx.clearRect(0, 0, w, h);
 }
 
@@ -95,8 +117,8 @@ function drawCircuitCenter(canvas, circuitW, circuitH, cornerW, cornerH) {
 
 function drawArms(canvas, circuitW, circuitH, cornerW, cornerH, numConnectors) {
     ctx = canvas.getContext("2d");
-    h = canvas.height;
-    w = canvas.width;
+    const h = canvas.height;
+    const w = canvas.width;
 
     centerX = w / 2;
     centerY = h / 2;
@@ -106,26 +128,22 @@ function drawArms(canvas, circuitW, circuitH, cornerW, cornerH, numConnectors) {
     spaceY = ((circuitH - cornerH * 2) - cDiameter * numConnectors) / (numConnectors - 1);
     gapX = cornerW / 2;
     gapY = cornerH / 2;
-    newX = - (circuitW / 2) - gapX - cornerW;
-    newY = - (circuitH / 2) - gapY - cornerH;
+    newX = -(circuitW / 2) - gapX - cornerW;
+    newY = -(circuitH / 2) - gapY - cornerH;
 
     ctx.translate(centerX, centerY);
-    for(side = 0; side < 4; side++) {
+    for(var side = 0; side < 4; side++) {
       ctx.rotate(Math.PI / 2);
       ctx.translate(newX, newY);
       startOffestX = gapX + cDiameter + cornerW;
       startOffestY = gapY + cDiameter + cornerH;
-      // Left side
-      frameX = cRadius;
-      frameY = startOffestY + cDiameter;
+      var frameX = 0;
+      var frameY = startOffestY + cRadius;
       ctx.translate(frameX, frameY);
-      for(c = 0; c < numConnectors; c++) {
-        newOffest = cDiameter + spaceY;
-        circle(ctx, 0, 0, cRadius);
-        ctx.stroke();
-        ctx.moveTo(-cRadius, 0);
-        ctx.lineTo(-20 - (c * 5), 0);
-        ctx.stroke();
+      for(var c = 0; c < numConnectors; c++) {
+        var newOffest = cDiameter + spaceY;
+        path = allPaths[side * numConnectors + c];
+        arm(ctx, -20 - (c * 5), path)
         ctx.translate(0, newOffest);
         frameY += newOffest;
       }
@@ -133,59 +151,56 @@ function drawArms(canvas, circuitW, circuitH, cornerW, cornerH, numConnectors) {
       ctx.translate(-newX, - newY)
     }
     ctx.translate(-centerX, -centerY);
-    // ctx.translate(newX, newY);
-    // startOffestX = gapX + cDiameter + cornerW;
-    // startOffestY = gapY + cDiameter + cornerH;
-    // // Left side
-    // frameX = cRadius;
-    // frameY = startOffestY + cDiameter;
-    // ctx.translate(frameX, frameY);
-    // for(c = 0; c < numConnectors; c++) {
-    //   newOffest = cDiameter + spaceY;
-    //   circle(ctx, 0, 0, cRadius);
-    //   ctx.stroke();
-    //   ctx.moveTo(-cRadius, 0);
-    //   ctx.lineTo(-20 - (c * 5), 0);
-    //   ctx.stroke();
-    //   ctx.translate(0, newOffest);
-    //   frameY += newOffest;
-    // }
-    // ctx.translate(-frameX, -frameY)
-    // // Bottom
-    // frameX = startOffestX + cDiameter;
-    // frameY = cRadius + startOffestY * 2 + circuitH - (cornerH * 2);
-    // ctx.translate(frameX, frameY);
-    // for(c = 0; c < numConnectors; c++) {
-    //   newOffest = cDiameter + spaceX;
-    //   circle(ctx, 0, 0, cRadius);
-    //   ctx.stroke();
-    //   ctx.translate(newOffest, 0);
-    //   frameX += newOffest;
-    // }
-    // ctx.translate(-frameX, -frameY)
-    // // Top
-    // frameX = startOffestX + cDiameter;
-    // frameY = cRadius;
-    // ctx.translate(frameX, frameY);
-    // for(c = 0; c < numConnectors; c++) {
-    //   newOffest = cDiameter + spaceX;
-    //   circle(ctx, 0, 0, cRadius);
-    //   ctx.stroke();
-    //   ctx.translate(newOffest, 0);
-    //   frameX += newOffest;
-    // }
-    // ctx.translate(-frameX, -frameY)
-    // // Right
-    // frameX = cRadius + startOffestX * 2 + circuitW - (cornerW * 2);
-    // frameY = startOffestY + cDiameter;
-    // ctx.translate(frameX, frameY);
-    // for(c = 0; c < numConnectors; c++) {
-    //   newOffest = cDiameter + spaceY;
-    //   circle(ctx, 0, 0, cRadius);
-    //   ctx.stroke();
-    //   ctx.translate(0, newOffest);
-    //   frameY += newOffest;
-    // }
-    // ctx.translate(-frameX, -frameY)
-    // ctx.translate(-newX, -newY);
+}
+
+function arm(ctx, segmentLength, path) {
+  circle(ctx, cRadius, cRadius, cRadius);
+  ctx.stroke();
+  var adjustedY = -cRadius * Math.sin(path[0] * Math.PI / 4);
+  var adjustedX = 0;
+  if(path[0] == 2 || path[0] == 6) {
+    adjustedX = cRadius;
+  }
+  ctx.translate(adjustedX, adjustedY)
+  ctx.moveTo(0, cRadius);
+  var prevX = 0;
+  var prevY = cRadius;
+  for(var c = 0; c < path.length; c++) {
+    prevX += segmentLength * Math.cos(path[c] * Math.PI / 4);
+    prevY += segmentLength * Math.sin(path[c] * Math.PI / 4);
+    line(ctx, prevX, prevY);
+  }
+  ctx.stroke();
+  lastDir = path[path.length-1]
+  circle(ctx, prevX - cRadius * Math.cos(lastDir * Math.PI / 4), prevY - cRadius * Math.sin(lastDir * Math.PI / 4), cRadius);
+  if(lastDir % 2 == 0) {
+    ctx.stroke();
+  }
+  else {
+    ctx.fill();
+  }
+  ctx.translate(-adjustedX, -adjustedY)
+}
+
+function generatePath(length, initial, validDirections) {
+  path = [initial];
+  for(var i = 1, prev = initial; i < length; prev = path[i], i++) {
+    var pathOptions = generatePathOptions(prev, validDirections)
+    var step = Math.floor(Math.random() * pathOptions.length);
+    path[i] = pathOptions[step];
+  }
+  return path;
+}
+
+function generatePathOptions(pathCurrent, validDirections) {
+  var pathOptions = [pathCurrent];
+  for(var i = 0; i < validDirections.length; i++) {
+    if((pathCurrent + 7) % 8 == validDirections[i]) {
+      pathOptions.push((pathCurrent + 7) % 8);
+    }
+    else if((pathCurrent + 1) % 8 == validDirections[i]) {
+      pathOptions.push((pathCurrent + 1) % 8);
+    }
+  }
+  return pathOptions;
 }
