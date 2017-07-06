@@ -63,7 +63,7 @@ def login():
                     return render_template("ctf/loggedin.html")
                 except:
                     db.session.rollback()
-                    error = "Database failure! Please contact an administrator"
+                    error = "Database failure! Please contact an administrator."
                     raise
         elif create is False or create is None:
             # Check hash
@@ -71,14 +71,18 @@ def login():
             if db_user is None:
                 error = "Login failed, please try again."
             elif bcrypt.checkpw((hashlib.sha256(pasw.encode(), db_user.hash))):
-                session['user'] = user
-                return render_template("ctf/loggedin.html")
+                if db_user.is_active is True:
+                    session['user'] = user
+                    return render_template("ctf/loggedin.html")
+                else:
+                    error = "Login falied, your account is not active. Please contact an administrator."
             else:
-                error = "Login failed, please try again"
+                error = "Login failed, please try again."
     if error is not None:
         return render_template('ctf/login.html', error=error)
     else:
         return render_template('ctf/login.html')
+
 
 @mod.route('/logout')
 def logout():
@@ -88,7 +92,11 @@ def logout():
 
 @mod.route('/challenges')
 def challenges():
-    return render_template('ctf/challenges.html', challenges=get_ctfs())
+    is_admin = False
+    if "username" in session:
+        user = User.query.filter_by(username=session['username']).first()
+        is_admin = user.is_admin
+    return render_template('ctf/challenges.html', challenges=get_ctfs(), is_admin=is_admin)
 
 
 @mod.route('/scoreboard')

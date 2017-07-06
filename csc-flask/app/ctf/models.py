@@ -14,8 +14,7 @@ class CompleteFlag(db.Model):
     flag_id = db.Column(db.Integer, db.ForeignKey("flags.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-    flag = db.relationship("Flag", backref=db.backref("flags", lazy="dynamic"))
-    user = db.relationship("User", backref=db.backref("users", lazy="dynamic"))
+    flag = db.relationship("Flag")
 
 
 class CTF(db.Model):
@@ -24,6 +23,8 @@ class CTF(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
+
+    flags = db.relationship("Flag")
 
 
 class Flag(db.Model):
@@ -35,9 +36,7 @@ class Flag(db.Model):
     key = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
     hint = db.Column(db.String)
-    active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
-
-    ctf = db.relationship("CTF", backref=db.backref("ctfs", lazy="dynamic"))
+    is_active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
 
 
 class User(db.Model):
@@ -46,5 +45,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
-    active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
-    admin = db.Column(db.Boolean, nullable=False, server_default="F", default="F")
+    is_active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
+    is_admin = db.Column(db.Boolean, nullable=False, server_default="F", default="F")
+
+    complete_flags = db.relationship("CompleteFlag")

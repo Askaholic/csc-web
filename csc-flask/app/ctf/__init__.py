@@ -24,7 +24,10 @@ class CTFBlueprint(Blueprint):
         '''.format(url_for("ctf.login"), url_for("ctf.challenges"), url_for("ctf.scoreboard"))
         return navbar_entry
 
+    def get_script(self):
+        return "ctf.js"
 
-mod = CTFBlueprint("ctf", __name__, url_prefix="/ctf", template_folder="templates")
+
+mod = CTFBlueprint("ctf", __name__, url_prefix="/ctf", template_folder="templates", static_folder="static")
 
 from . import controllers

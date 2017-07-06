@@ -3,6 +3,18 @@ html, body {
   background-image: url("circuit.jpg");
   background-repeat: repeat;
 }
+
+#add-challenge {
+   text-decoration: none;
+}
+
+.background {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 10px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
 .canvas-background {
   display: block;
   position: fixed;
@@ -45,6 +57,18 @@ html, body {
   background-color: #0c5493;
   border-color: #083964;
   color: #9fb3c4;
+}
+.gi-2x {
+  font-size: 2em;
+}
+.gi-3x {
+  font-size: 3em;
+}
+.gi-4x {
+  font-size: 4em;
+}
+.gi-5x {
+  font-size: 5em;
 }
 .navbar-cyber {
   background-color: #0c5493;

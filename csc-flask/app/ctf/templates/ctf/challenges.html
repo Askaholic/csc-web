@@ -14,17 +14,28 @@
 {% block body %}
 <div class="centered-wrapper">
   <div class="col-md-3">
-    <ul class="nav nav-pills nav-stacked">
-      <li class="active"><a href="#">Challenges</a></li>
-      {% for ch in challenges %}
-      <li><a href="#">{{ ch.name }}</a></li>
-      {% endfor %}
-    </ul>
+    <div class="background">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">Challenges</a></li>
+        {% for ch in challenges %}
+        <li><a href="#">{{ ch.name }}</a></li>
+        {% endfor %}
+        {% if true %}
+        <li>
+          <div class="text-center">
+              <a id="add-challenge" class="glyphicon glyphicon-plus-sign gi-2x" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="#"></a>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
   <!-- End first column -->
   </div>
   <div class="col-md-9">
-    <h1>Challenges</h1>
-    <p>Select a challenge to begin.</p>
+    <div class="background">
+      <h1>Challenges</h1>
+      <p>Select a challenge to begin.</p>
+    </div>
   <!-- End second column -->
   </div>
 <!-- End centered-wrapper -->
