@@ -27,6 +27,9 @@ class CTFBlueprint(Blueprint):
     def get_script(self):
         return "ctf.js"
 
+    def get_css(self):
+        return "ctf.css"
+
 
 mod = CTFBlueprint("ctf", __name__, url_prefix="/ctf", template_folder="templates", static_folder="static")
 

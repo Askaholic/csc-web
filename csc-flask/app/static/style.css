@@ -3,11 +3,6 @@ html, body {
   background-image: url("circuit.jpg");
   background-repeat: repeat;
 }
-
-#add-challenge {
-   text-decoration: none;
-}
-
 .background {
   background-color: #FFFFFF;
   border-radius: 8px;

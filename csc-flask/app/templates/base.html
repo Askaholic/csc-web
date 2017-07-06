@@ -14,7 +14,7 @@
       <script src="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ mod.script }}{% raw %}') }}{% endraw %}"></script>
       {% endif %}
       {% if mod.css is defined %}
-      <link rel="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %} {{ mod.css }}{% raw %}') }}{% endraw %}"></script>
+      <link rel="stylesheet" href="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ mod.css }}{% raw %}') }}{% endraw %}"></script>
       {% endif %}
     {% endfor %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
