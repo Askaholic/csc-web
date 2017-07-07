@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% block ctf_entry %}
+{% if csrf_token is not none %}
+<input type="hidden" id="token" value="{{ csrf_token }}"/>
+{% endif %}
 <li class="dropdown active">
   <a class="dropdown-toggle" data-toggle="dropdown" href="#">CTF
     <span class="caret"></span>

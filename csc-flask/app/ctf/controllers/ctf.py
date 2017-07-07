@@ -6,11 +6,10 @@
 
 from .. import mod
 from app import db
-from .authentication import csrf_protected, csrf_token
+from .authentication import csrf_protected
 from .controllers import get_ctfs
 from flask import abort, redirect, render_template, request, session, url_for
 from .. import formatting
-import json
 from ..models import CompleteFlag, CTF, Flag, User
 
 HTTP_400_BAD_REQUEST = 400
@@ -24,14 +23,12 @@ def challenges():
     if "user" in session:
         user = User.query.filter_by(username=session['user']).first()
         is_admin = user.is_admin
-        print("User is_admin {}".format(is_admin))
-    return render_template('ctf/challenges.html', challenges=get_ctfs(), is_admin=is_admin)
+    return render_template('ctf/challenges.html', challenges=get_ctfs(), is_admin=is_admin, csrf_token=session.get('csrf_token'))
 
 
 @mod.route('/get_flags', methods=['GET', 'POST'])
-# @csrf_protected
-@csrf_token
-def get_flags(token):
+@csrf_protected
+def get_flags():
     if "user" in session:
         user = User.query.filter_by(username=session['user']).first()
         if user is None or user.is_active is False:
@@ -53,12 +50,12 @@ def get_flags(token):
                 d.update({"complete": complete})
                 flags.append(d)
             return render_template("ctf/flags.html", ctf_name=ctf_name, flags=flags, is_admin=user.is_admin)
-            return json.dumps({"flags": map(formatting.flag_to_dict, ctf.flags_active), "key": token})
     else:
         abort(HTTP_401_UNAUTHORIZED)
 
 
 @mod.route('/submit_flag', methods=['GET', 'POST'])
+@csrf_protected
 def submit_flag():
     if "user" in session:
         user = User.query.filter_by(username=session['user']).first()
@@ -88,9 +85,8 @@ def submit_flag():
 
 
 @mod.route('/createform')
-@csrf_token
-def get_ctf_form(token):
-    return render_template('ctf/new_ctf.html', csrf_token=token)
+def get_ctf_form():
+    return render_template('ctf/new_ctf.html', csrf_token=session.get('csrf_token'))
 
 
 @mod.route('/createflag', methods=['GET'])
@@ -98,7 +94,7 @@ def get_flag_form():
     ctf_name = request.args.get('ctf')
     if ctf_name is None:
         abort(HTTP_400_BAD_REQUEST)
-    return render_template('ctf/new_flag.html', ctf_name=ctf_name)
+    return render_template('ctf/new_flag.html', ctf_name=ctf_name, csrf_token=session.get('csrf_token'))
 
 
 @mod.route('create', methods=['GET', 'POST'])
@@ -131,7 +127,7 @@ def create_ctf():
 
 
 @mod.route('/add', methods=['GET', 'POST'])
-# @csrf_protected
+@csrf_protected
 def add_flag():
     if "user" in session:
         user = User.query.filter_by(username=session['user']).first()

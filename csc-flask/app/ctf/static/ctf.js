@@ -31,7 +31,7 @@ function selectCTF(e) {
   e.preventDefault();
   var target = $(this).attr("data-target");
   var url = $(this).attr("href")
-  var resp = $.get(url, {ctf: $(this).text()})
+  var resp = $.post(url + "?" + $.param({ctf: $(this).text()}), {key: $("#token").val()})
   resp.done(
     function(data) {
       $(target).hide(100);
@@ -69,7 +69,7 @@ function submitFlag(e) {
   e.preventDefault();
   var target = $(this).attr("data-target");
   var url = $(this).attr("href")
-  var resp = $.get(url, {id: $(target).attr("name"), flag: $(target).val()});
+  var resp = $.post(url + "?" + $.param({id: $(target).attr("name"), flag: $(target).val()}), {key: $("#token").val()});
   resp.done(
     function(data) {
       if(data == "") {

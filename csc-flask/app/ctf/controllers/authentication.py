@@ -21,23 +21,15 @@ def csrf_protected(func):
         if "csrf_token" not in session or "key" not in request.form or session['csrf_token'] != request.form['key']:
             abort(400)
         else:
-            session.pop("csrf_token")
-            session.modified = True
             return func()
 
     wrapper.__name__ = func.__name__
     return wrapper
 
 
-# Decorator for making a function generate a CSRF token
-def csrf_token(func):
-    def wrapper():
-        token = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(32))
-        session['csrf_token'] = token
-        return func(token)
-
-    wrapper.__name__ = func.__name__
-    return wrapper
+def set_csrf_token():
+    token = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(32))
+    session['csrf_token'] = token
 
 
 def is_valid_username(username):
@@ -93,6 +85,8 @@ def login():
                 try:
                     db.session.commit()
                     session['user'] = user
+
+                    set_csrf_token()
                     return render_template("ctf/loggedin.html")
                 except:
                     db.session.rollback()
@@ -106,6 +100,7 @@ def login():
             elif bcrypt.checkpw((hashlib.sha256(pasw.encode(), db_user.hash))):
                 if db_user.is_active is True:
                     session['user'] = user
+                    set_csrf_token()
                     return render_template("ctf/loggedin.html")
                 else:
                     error = "Login falied, your account is not active. Please contact an administrator."

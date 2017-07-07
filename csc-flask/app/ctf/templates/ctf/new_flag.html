@@ -28,5 +28,8 @@
     <textarea class="form-control" name="hint"></textarea>
   </div>
   <input type="hidden" name="ctf" value="{{ ctf_name }}"/>
+  {% if csrf_token is not none %}
+  <input type="hidden" name="key" value="{{ csrf_token }}"/>
+  {% endif %}
   <button type="submit" class="btn btn-default">Add</button>
 </form>
