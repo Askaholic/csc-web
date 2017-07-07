@@ -1,30 +1,60 @@
-# controllers.py
+# login.py
 # Rohan Weeden
-# Created: July 3, 2017
+# Created: July 6, 2017
 
-# Controllers for pages in ctf module
+# Controllers for authentication functions
 
-from . import mod
-from app import db, socketio
+from .. import mod
+from app import db
 import base64
 import bcrypt
-from flask import render_template, request, session
+from flask import abort, render_template, request, session
 import hashlib
-from .models import CTF, User
+from ..models import User
+import random
+import string
 
 
-def get_ctfs():
-    ctfs = []
-    for ctf in CTF.query.all():
-        ctfs.append({
-            "name": ctf.name
-        })
-    return ctfs
+# Decorator for making a function protected from CSRF
+def csrf_protected(func):
+    def wrapper():
+        if "csrf_token" not in session or "key" not in request.form or session['csrf_token'] != request.form['key']:
+            abort(400)
+        else:
+            session.pop("csrf_token")
+            session.modified = True
+            return func()
+
+    wrapper.__name__ = func.__name__
+    return wrapper
 
 
-@mod.route('/')
-def index():
-    return ""
+# Decorator for making a function generate a CSRF token
+def csrf_token(func):
+    def wrapper():
+        token = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(32))
+        session['csrf_token'] = token
+        return func(token)
+
+    wrapper.__name__ = func.__name__
+    return wrapper
+
+
+def is_valid_username(username):
+    if len(username) > 30:
+        return False
+    return True
+
+
+def get_username_chars_message():
+    return "Usernames must be less than 30 characters and only contain letters, numbers, and underscores."
+
+
+@mod.route('/makeadmin')
+def makeadmin():
+    User.query.filter_by(username=session['user']).is_admin = True
+    db.session.commit()
+    return "It's been done"
 
 
 @mod.route('/login', methods=['GET', 'POST'])
@@ -46,6 +76,8 @@ def login():
                 error = "That username is taken!"
             elif pasw != conf:
                 error = "Your passwords do not match!"
+            elif not is_valid_username(user):
+                error = "That username is invalid! {}".format(get_username_chars_message())
             else:
                 # Hash password (sha256 to make sure password length does not exceed 72)
                 hash = bcrypt.hashpw(
@@ -88,22 +120,3 @@ def login():
 def logout():
     session.clear()
     return "You've been logged out"
-
-
-@mod.route('/challenges')
-def challenges():
-    is_admin = False
-    if "username" in session:
-        user = User.query.filter_by(username=session['username']).first()
-        is_admin = user.is_admin
-    return render_template('ctf/challenges.html', challenges=get_ctfs(), is_admin=is_admin)
-
-
-@mod.route('/scoreboard')
-def scoreboard():
-    return render_template('ctf/scoreboard.html', challenges=get_ctfs())
-
-
-@socketio.on('my event')
-def handle_message(data):
-    print('Received message: ' + str(data))

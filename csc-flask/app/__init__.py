@@ -4,7 +4,7 @@
 
 # Flask app module
 
-from flask import Flask, render_template
+from flask import Flask
 # from flask_simpleldap import LDAP
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy

@@ -45,7 +45,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text, nullable=False, unique=True)
     password = db.Column(db.Text, nullable=False)
-    is_active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
-    is_admin = db.Column(db.Boolean, nullable=False, server_default="F", default="F")
+    is_active = db.Column(db.Boolean, nullable=False, server_default="true", default=True)
+    is_admin = db.Column(db.Boolean, nullable=False, server_default="false", default=False)
 
     complete_flags = db.relationship("CompleteFlag")

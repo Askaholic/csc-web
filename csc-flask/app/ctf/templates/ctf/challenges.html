@@ -20,10 +20,10 @@
         {% for ch in challenges %}
         <li><a href="#">{{ ch.name }}</a></li>
         {% endfor %}
-        {% if true %}
+        {% if is_admin is defined and is_admin == true %}
         <li>
           <div class="text-center">
-              <a id="add-challenge" class="glyphicon glyphicon-plus-sign gi-2x" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="#"></a>
+              <a id="add-challenge" data-target="#ctf-container" class="glyphicon glyphicon-plus-sign gi-2x" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_ctf_form') }}"></a>
           </div>
         </li>
         {% endif %}
@@ -34,7 +34,9 @@
   <div class="col-md-9">
     <div class="background">
       <h1>Challenges</h1>
-      <p>Select a challenge to begin.</p>
+      <div id="ctf-container">
+        <p>Select a challenge to begin.</p>
+      </div>
     </div>
   <!-- End second column -->
   </div>
