@@ -8,7 +8,7 @@ from .. import mod
 from app import db
 import base64
 import bcrypt
-from flask import abort, render_template, request, session
+from flask import abort, redirect, render_template, request, session, url_for
 import hashlib
 from ..models import User
 import random
@@ -52,8 +52,9 @@ def get_username_chars_message():
 
 @mod.route('/makeadmin')
 def makeadmin():
-    User.query.filter_by(username=session['user']).is_admin = True
+    User.query.filter_by(username=session['user']).first().is_admin = True
     db.session.commit()
+    print("Is admin " + str(User.query.filter_by(username=session['user']).first().is_admin))
     return "It's been done"
 
 
@@ -119,4 +120,4 @@ def login():
 @mod.route('/logout')
 def logout():
     session.clear()
-    return "You've been logged out"
+    return redirect(url_for("ctf.login"))

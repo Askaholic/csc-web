@@ -11,6 +11,7 @@ $(document).ready(
           $(target).hide(120);
       }
     );
+    $(".challenge-selector").click(selectCTF);
   }
 );
 
@@ -23,10 +24,73 @@ function addCTF(e) {
     $(target).html(data);
     $(target).show(120);
     $(this).hide();
-    registerAddCTFFormHandlers();
   });
 }
 
-function registerAddCTFFormHandlers() {
-  
+function selectCTF(e) {
+  e.preventDefault();
+  var target = $(this).attr("data-target");
+  var url = $(this).attr("href")
+  var resp = $.get(url, {ctf: $(this).text()})
+  resp.done(
+    function(data) {
+      $(target).hide(100);
+      $(target).html(data);
+      $(target).show(200);
+      $("#add-flag").click(addFlag);
+      $(".flag-submit").click(submitFlag);
+    }
+  );
+}
+
+function addFlag(e) {
+  e.preventDefault();
+  var target = $(this).attr("data-target");
+  var url = $(this).attr("href")
+  var resp = $.get(url, {ctf: $(this).attr("data-name")})
+  resp.done(
+    function(data) {
+      $(target).hide(100);
+      $(target).html(data);
+      $(target).show(200);
+      $("#generate").click(generateFlag);
+      $(".button-clicker").click(
+        function(e) {
+          e.preventDefault();
+          var target = $(this).attr("data-target");
+          $(target).click();
+        }
+      );
+    }
+  );
+}
+
+function submitFlag(e) {
+  e.preventDefault();
+  var target = $(this).attr("data-target");
+  var url = $(this).attr("href")
+  var resp = $.get(url, {id: $(target).attr("name"), flag: $(target).val()});
+  resp.done(
+    function(data) {
+      if(data == "") {
+        $(this).prop("disabled", true);
+        $(target).prop("disabled", true);
+      }
+    }
+  );
+  resp.fail(
+    function(data) {
+      alert("Failed");
+    }
+  );
+
+}
+
+function generateFlag(e) {
+  e.preventDefault();
+  var target = $(this).attr("data-target");
+  var result = 'KEY_';
+  const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  for (var i = 20; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+  $(target).val(result);
 }

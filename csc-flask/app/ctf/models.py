@@ -21,10 +21,11 @@ class CTF(db.Model):
     __tablename__ = "ctfs"
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Text, nullable=False)
+    name = db.Column(db.Text, nullable=False, unique=True)
     description = db.Column(db.Text)
 
     flags = db.relationship("Flag")
+    flags_active = db.relationship("Flag", primaryjoin="and_(CTF.id==Flag.ctf_id, Flag.is_active==true)")
 
 
 class Flag(db.Model):
@@ -32,11 +33,11 @@ class Flag(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     ctf_id = db.Column(db.Integer, db.ForeignKey("ctfs.id"))
-    name = db.Column(db.Text, nullable=False)
+    name = db.Column(db.Text, nullable=False, unique=True)
     key = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text)
     hint = db.Column(db.String)
-    is_active = db.Column(db.Boolean, nullable=False, server_default="T", default="T")
+    is_active = db.Column(db.Boolean, nullable=False, server_default="T", default=True)
 
 
 class User(db.Model):
