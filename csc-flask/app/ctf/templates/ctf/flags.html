@@ -1,6 +1,14 @@
+<p>{{ ctf_description }}</p>
 {% for flag in flags %}
 <hr/>
 <div>
+  {% if is_admin == true %}
+  <div class="pull-right">
+    <button class="btn btn-default flag-edit" title="Edit" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_edit_form') }}" data-target="#ctf-container">
+      <i class="glyphicon glyphicon-wrench"></i>
+    </button>
+  </div>
+  {% endif %}
   <h3>{{ loop.index }}. {{ flag.name }}</h3>
   <div class="form-group">
     <p>{{ flag.description }}</p>
@@ -8,7 +16,7 @@
       <span class="input-group-addon"><i class="glyphicon glyphicon-flag"></i></span>
       <input type="text" class="form-control" {% if flag.complete == true %}disabled{% endif %} id="flag{{ flag.id }}" name="{{ flag.id }}" {% if flag.complete == true %}value="{{ flag.key }}"{% endif %}/>
       <div class="input-group-btn">
-        <button type="submit" class="btn btn-default flag-submit" {% if flag.complete == true %}disabled{% endif %} data-target="#flag{{ flag.id }}" href="{{ url_for('ctf.submit_flag') }}">
+        <button type="submit" class="btn btn-default flag-submit" {% if flag.complete == true %}disabled{% endif %} data-target="#flag{{ flag.id }}" href="{{ url_for('ctf.submit_flag') }}" title="Check flag" data-toggle="tooltip" data-placement="bottom">
           <i class="glyphicon glyphicon-ok"></i>
         </button>
       </div>
@@ -19,6 +27,8 @@
 {% if is_admin == true %}
 <hr/>
 <div class="text-center">
-    <a id="add-flag" data-target="#ctf-container" class="glyphicon glyphicon-plus-sign gi-2x gi-link" title="Add a new flag" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_form') }}" data-name="{{ ctf_name }}"></a>
+  <button id="add-flag" data-target="#ctf-container" class="btn btn-default" title="Add a new flag" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_form') }}" data-name="{{ ctf_name }}">
+    New Flag
+  </button>
 </div>
 {% endif %}

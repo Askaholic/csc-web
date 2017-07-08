@@ -12,6 +12,8 @@ def flag_to_dict(flag):
         ("id", flag.id),
         ("name", flag.name),
         ("key", flag.key),
+        ("points", flag.points),
         ("description", flag.description),
+        ("hint", flag.hint)
     ])
     return d

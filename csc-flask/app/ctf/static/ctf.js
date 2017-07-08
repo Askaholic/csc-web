@@ -39,6 +39,21 @@ function selectCTF(e) {
       $(target).show(200);
       $("#add-flag").click(addFlag);
       $(".flag-submit").click(submitFlag);
+      $(".flag-edit").click(editFlag);
+    }
+  );
+}
+
+function setFlagHTML(target, data) {
+  $(target).hide(100);
+  $(target).html(data);
+  $(target).show(200);
+  $("#generate").click(generateFlag);
+  $(".button-clicker").click(
+    function(e) {
+      e.preventDefault();
+      var target = $(this).attr("data-target");
+      $(target).click();
     }
   );
 }
@@ -50,17 +65,7 @@ function addFlag(e) {
   var resp = $.get(url, {ctf: $(this).attr("data-name")})
   resp.done(
     function(data) {
-      $(target).hide(100);
-      $(target).html(data);
-      $(target).show(200);
-      $("#generate").click(generateFlag);
-      $(".button-clicker").click(
-        function(e) {
-          e.preventDefault();
-          var target = $(this).attr("data-target");
-          $(target).click();
-        }
-      );
+      setFlagHTML(target, data);
     }
   );
 }
@@ -83,7 +88,23 @@ function submitFlag(e) {
       alert("Failed");
     }
   );
+}
 
+function editFlag(e) {
+  e.preventDefault();
+  var target = $(this).attr("data-target");
+  var url = $(this).attr("href")
+  var resp = $.post(url + "?" + $.param({id: $(target).attr("name")}), {key: $("#token").val()});
+  resp.done(
+    function(data) {
+        setFlagHTML(target, data);
+    }
+  );
+  resp.fail(
+    function(data) {
+      alert("An error occurred");
+    }
+  );
 }
 
 function generateFlag(e) {

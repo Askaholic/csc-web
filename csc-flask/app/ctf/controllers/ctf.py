@@ -49,7 +49,7 @@ def get_flags():
                     complete = True
                 d.update({"complete": complete})
                 flags.append(d)
-            return render_template("ctf/flags.html", ctf_name=ctf_name, flags=flags, is_admin=user.is_admin)
+            return render_template("ctf/flags.html", ctf_name=ctf_name, ctf_description=ctf.description, flags=flags, is_admin=user.is_admin)
     else:
         abort(HTTP_401_UNAUTHORIZED)
 
@@ -86,7 +86,12 @@ def submit_flag():
 
 @mod.route('/createform')
 def get_ctf_form():
-    return render_template('ctf/new_ctf.html', csrf_token=session.get('csrf_token'))
+    if "user" in session:
+        user = User.query.filter_by(username=session['user']).first()
+        if user is None or user.is_admin is False or user.is_active is False:
+            abort(HTTP_403_FORBIDDEN)
+        else:
+            return render_template('ctf/new_ctf.html', csrf_token=session.get('csrf_token'))
 
 
 @mod.route('/createflag', methods=['GET'])
@@ -95,6 +100,23 @@ def get_flag_form():
     if ctf_name is None:
         abort(HTTP_400_BAD_REQUEST)
     return render_template('ctf/new_flag.html', ctf_name=ctf_name, csrf_token=session.get('csrf_token'))
+
+
+@mod.route('/editflag', methods=['GET', 'POST'])
+@csrf_protected
+def get_flag_edit_form():
+    if "user" in session:
+        user = User.query.filter_by(username=session['user']).first()
+        if user is None or user.is_admin is False or user.is_active is False:
+            abort(HTTP_403_FORBIDDEN)
+        else:
+            flag_id = request.args.get("id")
+            if flag_id is None or not flag_id.isdigit():
+                abort(HTTP_400_BAD_REQUEST)
+            flag = Flag.query.filter_by(id=flag_id)
+            if flag is None:
+                abort(HTTP_400_BAD_REQUEST)
+            return render_template('ctf/edit_flag.html', csrf_token=session.get('csrf_token'), flag=formatting.flag_to_dict(flag))
 
 
 @mod.route('create', methods=['GET', 'POST'])
@@ -163,3 +185,28 @@ def add_flag():
             return redirect(url_for("ctf.challenges"))
     else:
         abort(HTTP_401_UNAUTHORIZED)
+
+
+@mod.route('/edit', methods=['GET', 'POST'])
+@csrf_protected
+def edit_flag():
+    if "user" in session:
+        user = User.query.filter_by(username=session['user']).first()
+        if user is None or user.is_admin is False or user.is_active is False:
+            abort(HTTP_403_FORBIDDEN)
+        else:
+            flag_id = request.form.get("id")
+            if flag_id is None:
+                abort(HTTP_400_BAD_REQUEST)
+            flag_name = request.form.get("name")
+            flag_key = request.form.get("flag")
+            flag_desc = request.form.get("desc")
+            flag_hint = request.form.get("hint")
+            flag = Flag.query.filter_by(id=flag_id).first()
+            if flag is None:
+                abort(HTTP_400_BAD_REQUEST)
+            flag.name = flag_name
+            flag.key = flag_key
+            flag.desc = flag_desc
+            flag.hint = flag_hint
+            return ""

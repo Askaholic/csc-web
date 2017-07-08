@@ -35,6 +35,7 @@ class Flag(db.Model):
     ctf_id = db.Column(db.Integer, db.ForeignKey("ctfs.id"))
     name = db.Column(db.Text, nullable=False, unique=True)
     key = db.Column(db.Text, nullable=False)
+    points = db.Column(db.Integer, nullable=False, server_default="1", default=1)
     description = db.Column(db.Text)
     hint = db.Column(db.String)
     is_active = db.Column(db.Boolean, nullable=False, server_default="T", default=True)

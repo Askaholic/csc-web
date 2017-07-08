@@ -14,12 +14,14 @@
 {% block body %}
 <div class="centered-wrapper">
   <div class="col-md-3">
-    <ul class="nav nav-pills nav-stacked">
-      <li class="active"><a href="#">Challenges</a></li>
-      {% for ch in challenges %}
-      <li><a href="#">{{ ch.name }}</a></li>
-      {% endfor %}
-    </ul>
+    <div class="background">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">Challenges</a></li>
+        {% for ch in challenges %}
+        <li><a href="#">{{ ch.name }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
   <!-- End first column -->
   </div>
   <div class="col-md-9">

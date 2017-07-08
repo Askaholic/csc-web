@@ -19,14 +19,14 @@
   <div class="col-md-3">
     <div class="background">
       <ul class="nav nav-pills nav-stacked">
-        <li class="active"><a href="#">Challenges</a></li>
+        <li class="active"><a href="#"><i class="glyphicon glyphicon-menu-hamburger"></i> Challenges</a></li>
         {% for ch in challenges %}
         <li><a href="{{ url_for('ctf.get_flags') }}" class="challenge-selector" data-target="#ctf-container" id="{{ ch.name }}">{{ ch.name }}</a></li>
         {% endfor %}
         {% if is_admin is defined and is_admin == true %}
         <li>
           <div class="text-center">
-              <a id="add-challenge" data-target="#ctf-container" class="glyphicon glyphicon-plus-sign gi-2x gi-link" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_ctf_form') }}"></a>
+              <button id="add-challenge" data-target="#ctf-container" class="btn btn-default btn-block" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_ctf_form') }}">New CTF</button>
           </div>
         </li>
         {% endif %}
