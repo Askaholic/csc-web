@@ -42,17 +42,23 @@ def create_layout_template():
     mods = []
     for mod in app.iter_blueprints():
         mod_dict = {
-            "name": mod.name,
-            "nav_entry": mod.get_navbar_entry() if hasattr(mod, "get_navbar_entry") else "",
-            "nav_extension": mod.get_navbar_extension() if hasattr(mod, "get_navbar_extension") else "",
+            "name": mod.name
         }
-        if hasattr(mod, "get_script"):
+        if hasattr(mod, "navbar_entry"):
             mod_dict.update({
-                "script": mod.get_script()
+                "nav_entry": mod.navbar_entry
             })
-        if hasattr(mod, "get_css"):
+        if hasattr(mod, "navbar_extension"):
             mod_dict.update({
-                "css": mod.get_css()
+                "nav_extension": mod.navbar_extension
+            })
+        if hasattr(mod, "scripts"):
+            mod_dict.update({
+                "scripts": mod.scripts
+            })
+        if hasattr(mod, "stylesheets"):
+            mod_dict.update({
+                "stylesheets": mod.stylesheets
             })
         mods.append(mod_dict)
     with open(os.path.join(template_folder, "layout.html"), "w") as layout_template_file:

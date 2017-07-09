@@ -97,7 +97,7 @@ def login():
             db_user = User.query.filter_by(username=user).first()
             if db_user is None:
                 error = "Login failed, please try again."
-            elif bcrypt.checkpw((hashlib.sha256(pasw.encode(), db_user.hash))):
+            elif bcrypt.checkpw(base64.b64encode(hashlib.sha256(pasw.encode()).digest()), db_user.password.encode()):
                 if db_user.is_active is True:
                     session['user'] = user
                     set_csrf_token()

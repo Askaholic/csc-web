@@ -10,11 +10,15 @@
     <script src="{% raw %}{{ url_for('static', _external=True, filename='cyber.js') }}{% endraw %}"></script>
     {# Add any custom css or javascript from installed modules #}
     {% for mod in modules %}
-      {% if mod.script is defined %}
-      <script src="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ mod.script }}{% raw %}') }}{% endraw %}"></script>
+      {% if mod.scripts is defined %}
+        {% for script in mod.scripts %}
+        <script src="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ script }}{% raw %}') }}{% endraw %}"></script>
+        {% endfor %}
       {% endif %}
-      {% if mod.css is defined %}
-      <link rel="stylesheet" href="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ mod.css }}{% raw %}') }}{% endraw %}"></script>
+      {% if mod.stylesheets is defined %}
+        {% for css in mod.stylesheets %}
+        <link rel="stylesheet" href="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ css }}{% raw %}') }}{% endraw %}"></script>
+        {% endfor %}
       {% endif %}
     {% endfor %}
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,16 +54,16 @@
               <li><a href="mailto:csc.uaf@alaska.edu">Contact</a></li>
               {# Add any additional installed modules to the navbar #}
               {% for mod in modules %}
-                {% raw %}{% block {% endraw %}{{ mod.name }}_entry{% raw %} %}{% endraw %}
-                {{ mod.nav_entry|safe }}
-                {% raw %}{% endblock %}{% endraw %}
+                {% if mod.nav_entry is defined %}
+                  {% raw %}{% include '{% endraw %}{{ mod.nav_entry}}{% raw %}' %}{% endraw %}
+                {% endif %}
               {% endfor %}
             <!-- End Navbar ul -->
             </ul>
             {% for mod in modules %}
-              {% raw %}{% block {% endraw %}{{ mod.name }}_extension{% raw %} %}{% endraw %}
-              {{ mod.nav_extension|safe }}
-              {% raw %}{% endblock %}{% endraw %}
+              {% if mod.nav_extension is defined %}
+                {% raw %}{% include '{% endraw %}{{ mod.nav_extension}}{% raw %}' %}{% endraw %}
+              {% endif %}
             {% endfor %}
           <!-- End container-fluid -->
           </div>
