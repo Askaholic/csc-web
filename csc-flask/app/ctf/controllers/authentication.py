@@ -27,6 +27,26 @@ def csrf_protected(func):
     return wrapper
 
 
+# Decorator for making sure a user is logged in
+def logged_in(is_admin=False):
+    def wrap(func):
+        def wrapper():
+            if "user" in session:
+                user = User.query.filter_by(username=session['user']).first()
+                if user is None or user.is_active is False:
+                    abort(403)
+                else:
+                    if is_admin is True and user.is_admin is False:
+                        abort(403)
+                    return func(user)
+            else:
+                abort(401)
+
+        wrapper.__name__ = func.__name__
+        return wrapper
+    return wrap
+
+
 def set_csrf_token():
     token = ''.join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(32))
     session['csrf_token'] = token

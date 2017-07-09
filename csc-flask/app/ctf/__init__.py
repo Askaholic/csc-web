@@ -8,8 +8,8 @@ from flask import Blueprint
 
 
 class CTFBlueprint(Blueprint):
-    navbar_entry = "ctf/navbar.html"
-    navbar_extension = "ctf/nav_extension.html"
+    navbar_entry = "ctf/nav/navbar.html"
+    navbar_extension = "ctf/nav/nav_extension.html"
     scripts = ["ctf.js"]
     stylesheets = ["ctf.css"]
 
