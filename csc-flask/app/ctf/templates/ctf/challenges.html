@@ -9,7 +9,7 @@
       <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#"><i class="glyphicon glyphicon-menu-hamburger"></i> Challenges</a></li>
         {% for ch in challenges %}
-        <li><a href="{{ url_for('ctf.get_flags') }}" class="challenge-selector" data-target="#ctf-container" id="{{ ch.name }}">{{ ch.name }}</a></li>
+        <li><a href="{{ url_for('ctf.challenges', challenge_name=ch.name) }}" class="challenge-selector" data-target="#ctf-container" id="{{ ch.name }}">{{ ch.name }}</a></li>
         {% endfor %}
         {% if is_admin is defined and is_admin == true %}
         <li>
@@ -26,7 +26,11 @@
     <div class="background">
       <h1>Challenges</h1>
       <div id="ctf-container">
-        <p>Select a challenge to begin.</p>
+        {% if ctf_name is defined %}
+          {% include 'ctf/flags.html' %}
+        {% else %}
+          <p>Select a challenge to begin.</p>
+        {% endif %}
       </div>
     </div>
   <!-- End second column -->

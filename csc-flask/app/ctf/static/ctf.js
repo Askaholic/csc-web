@@ -2,6 +2,9 @@ $(document).ready(
   function() {
     $("#add-challenge").click(addCTF);
 
+    $("#add-flag").click(addFlag);
+    $(".flag-submit").click(submitFlag);
+    $(".flag-edit").click(editFlag);
     $("#create-account").change(
       function() {
         var target = $(this).attr("data-target");
@@ -11,7 +14,7 @@ $(document).ready(
           $(target).hide(120);
       }
     );
-    $(".challenge-selector").click(selectCTF);
+    //$(".challenge-selector").click(selectCTF);
   }
 );
 
@@ -93,8 +96,9 @@ function submitFlag(e) {
 function editFlag(e) {
   e.preventDefault();
   var target = $(this).attr("data-target");
+  var flagEntry = $(this).attr("data-link")
   var url = $(this).attr("href")
-  var resp = $.post(url + "?" + $.param({id: $(target).attr("name")}), {key: $("#token").val()});
+  var resp = $.post(url + "?" + $.param({id: $(flagEntry).attr("name")}), {key: $("#token").val()});
   resp.done(
     function(data) {
         setFlagHTML(target, data);

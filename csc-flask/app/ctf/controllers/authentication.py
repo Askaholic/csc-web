@@ -30,7 +30,7 @@ def csrf_protected(func):
 # Decorator for making sure a user is logged in
 def logged_in(is_admin=False):
     def wrap(func):
-        def wrapper():
+        def wrapper(*args, **kwargs):
             if "user" in session:
                 user = User.query.filter_by(username=session['user']).first()
                 if user is None or user.is_active is False:
@@ -38,7 +38,7 @@ def logged_in(is_admin=False):
                 else:
                     if is_admin is True and user.is_admin is False:
                         abort(403)
-                    return func(user)
+                    return func(user, *args, **kwargs)
             else:
                 abort(401)
 

@@ -40,6 +40,8 @@ class Flag(db.Model):
     hint = db.Column(db.String)
     is_active = db.Column(db.Boolean, nullable=False, server_default="T", default=True)
 
+    ctf = db.relationship("CTF", back_populates="flags")
+
 
 class User(db.Model):
     __tablename__ = "users"

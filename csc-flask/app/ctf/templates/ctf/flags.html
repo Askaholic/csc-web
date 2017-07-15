@@ -1,10 +1,17 @@
+{% if is_admin == true %}
+<div class="pull-right">
+  <button class="btn btn-default ctf-edit" title="Edit CTF name and description" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_edit_form') }}" data-target="#ctf-container">
+    <i class="glyphicon glyphicon-wrench"></i>
+  </button>
+</div>
+{% endif %}
 <p>{{ ctf_description }}</p>
 {% for flag in flags %}
 <hr/>
 <div>
   {% if is_admin == true %}
   <div class="pull-right">
-    <button class="btn btn-default flag-edit" title="Edit" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_edit_form') }}" data-target="#ctf-container">
+    <button class="btn btn-default flag-edit" title="Edit" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_flag_edit_form') }}" data-target="#ctf-container" data-link="#flag{{ flag.id }}">
       <i class="glyphicon glyphicon-wrench"></i>
     </button>
   </div>
