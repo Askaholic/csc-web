@@ -24,11 +24,6 @@ def index():
     return ""
 
 
-@mod.route('/scoreboard')
-def scoreboard():
-    return render_template('ctf/scoreboard.html', challenges=get_ctfs())
-
-
 @socketio.on('my event')
 def handle_message(data):
     print('Received message: ' + str(data))

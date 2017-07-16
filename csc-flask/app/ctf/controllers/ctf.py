@@ -5,7 +5,7 @@
 # Controllers for ctf functions
 
 from .. import mod
-from app import db
+from app import db, socketio
 from .authentication import csrf_protected, logged_in
 from .controllers import get_ctfs
 from flask import abort, redirect, render_template, request, session, url_for
@@ -87,6 +87,7 @@ def submit_flag(user):
         except:
             db.session.rollback()
             return "Database failure! Please contact an administrator."
+        socketio.emit("add_score", {"user": user.username, "score": flag.points}, broadcast=True, room=flag.ctf.name)
         return ""
     else:
         abort(HTTP_400_BAD_REQUEST)
