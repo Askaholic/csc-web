@@ -7,6 +7,7 @@
 from .. import mod
 from app import socketio
 from flask import render_template
+from flask_socketio import join_room
 from ..models import CTF
 
 
@@ -27,3 +28,8 @@ def index():
 @socketio.on('my event')
 def handle_message(data):
     print('Received message: ' + str(data))
+
+
+@socketio.on('request_room')
+def handle_room_request(room):
+    join_room(room)
