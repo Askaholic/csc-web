@@ -1,0 +1,9 @@
+<p>{{ ctf_description }}</p>
+{% for user in sorted_users %}
+<hr/>
+<h2 id="{{ user.name }}">{{ loop.index }}. {{ user.name }}
+  <span class="label label-default pull-right">
+    {{ user.points }}
+    <i class="glyphicon glyphicon-star"></i>
+  </span></h2>
+{% endfor %}

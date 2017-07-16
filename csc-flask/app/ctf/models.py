@@ -14,7 +14,8 @@ class CompleteFlag(db.Model):
     flag_id = db.Column(db.Integer, db.ForeignKey("flags.id"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
 
-    flag = db.relationship("Flag")
+    flag = db.relationship("Flag", back_populates="complete_flags")
+    user = db.relationship("User", back_populates="complete_flags")
 
 
 class CTF(db.Model):
@@ -41,6 +42,7 @@ class Flag(db.Model):
     is_active = db.Column(db.Boolean, nullable=False, server_default="T", default=True)
 
     ctf = db.relationship("CTF", back_populates="flags")
+    complete_flags = db.relationship("CompleteFlag")
 
 
 class User(db.Model):
