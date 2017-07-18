@@ -26,7 +26,7 @@ socketio = SocketIO(app)
 from .ctf import mod as mod_ctf
 app.register_blueprint(mod_ctf)
 
-from . import controllers
+from app import controllers
 from .ctf.models import *
 db.create_all()
 
