@@ -51,7 +51,7 @@
                   <li><a target="_blank" href="https://twitter.com/uafcsc">Twitter</a></li>
                 </ul>
               </li>
-              <li><a href="{{ url_for('contact') }}">Contact</a></li>
+              <li><a href="{% raw %}{{ url_for('contact') }}{% endraw %}">Contact</a></li>
               {# Add any additional installed modules to the navbar #}
               {% for mod in modules %}
                 {% if mod.nav_entry is defined %}
