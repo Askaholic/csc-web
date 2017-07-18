@@ -207,7 +207,7 @@ def edit_flag(user):
     flag.name = flag_name
     flag.key = flag_key
     flag.points = flag_points
-    flag.desc = flag_desc
+    flag.description = flag_desc
     flag.hint = flag_hint
     try:
         db.session.commit()
