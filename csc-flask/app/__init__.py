@@ -9,6 +9,7 @@ from flask import Flask
 from flask_socketio import SocketIO
 from flask_sqlalchemy import SQLAlchemy
 from jinja2 import Environment, FileSystemLoader
+from ldap3 import Server
 import os
 import uuid
 
@@ -21,7 +22,7 @@ if app.secret_key is None:
 
 db = SQLAlchemy(app)
 socketio = SocketIO(app)
-# ldap = LDAP(app)
+ldap_server = Server(app.config["LDAP_SERVER"], use_ssl=True)
 
 from .ctf import mod as mod_ctf
 app.register_blueprint(mod_ctf)
