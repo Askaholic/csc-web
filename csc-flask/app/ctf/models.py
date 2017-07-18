@@ -26,7 +26,7 @@ class CTF(db.Model):
     description = db.Column(db.Text)
 
     flags = db.relationship("Flag")
-    flags_active = db.relationship("Flag", primaryjoin="and_(CTF.id==Flag.ctf_id, Flag.is_active==true)")
+    flags_active = db.relationship("Flag", primaryjoin="and_(CTF.id==Flag.ctf_id, Flag.is_active=='true')")
 
 
 class Flag(db.Model):
