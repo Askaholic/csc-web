@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" href="{% raw %}{{ url_for('static', _external=True, filename='favicon.ico') }}{% endraw %}" type="image/x-icon">
+    <link rel="icon" href="{% raw %}{{ url_for('static', _external=True, filename='favicon.ico') }}{% endraw %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% raw %}{{ url_for('static', _external=True, filename='style.css') }}{% endraw %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{% raw %}{{ url_for('static', _external=True, filename='cyber.js') }}{% endraw %}"></script>
+    {# Add any custom css or javascript from installed modules #}
+    {% for mod in modules %}
+      {% if mod.scripts is defined %}
+        {% for script in mod.scripts %}
+        <script src="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ script }}{% raw %}') }}{% endraw %}"></script>
+        {% endfor %}
+      {% endif %}
+      {% if mod.stylesheets is defined %}
+        {% for css in mod.stylesheets %}
+        <link rel="stylesheet" href="{% raw %}{{ url_for('{% endraw %}{{ mod.name }}{% raw %}.static', _external=True, filename='{% endraw %}{{ css }}{% raw %}') }}{% endraw %}"></script>
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UAF Cyber Security Club</title>
+  </head>
+  <body>
+    <div class="footer-expanding-wrapper">
+      {# Escape jinja2 code #}
+      {% raw %}
+      {% block navbar %}
+      {% endraw %}
+      <nav class="navbar navbar-cyber">
+        <div class="centered-wrapper">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              {# Escape jinja2 code #}
+              <a class="navbar-brand" href="{% raw %}{{ url_for('index') }}{% endraw %}">Cyber Security Club</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Links
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a target="_blank" href="https://groups.google.com/a/alaska.edu/forum/?hl=en#!forum/uaf-cybersecurity-club">Google Group</a></li>
+                  <li><a target="_blank" href="https://drive.google.com/folderview?id=0B8wWpU2kxwL2S3RUempTMWVkU2M&usp=sharing">Google Drive Folder</a></li>
+                  <li><a target="_blank" href="https://vc.csc.uaf.edu/">vCenter</a></li>
+                  <li><a target="_blank" href="https://orgsync.com/122183/chapter">OrgSync</a></li>
+                  <li><a target="_blank" href="https://github.com/uafcsc">GitHub</a></li>
+                  <li><a target="_blank" href="https://uafcsc.slack.com/signup">Slack</a></li>
+                  <li><a target="_blank" href="https://twitter.com/uafcsc">Twitter</a></li>
+                </ul>
+              </li>
+              <li><a href="{% raw %}{{ url_for('contact') }}{% endraw %}">Contact</a></li>
+              {# Add any additional installed modules to the navbar #}
+              {% for mod in modules %}
+                {% if mod.nav_entry is defined %}
+                  {% raw %}{% include '{% endraw %}{{ mod.nav_entry}}{% raw %}' %}{% endraw %}
+                {% endif %}
+              {% endfor %}
+            <!-- End Navbar ul -->
+            </ul>
+            {% for mod in modules %}
+              {% if mod.nav_extension is defined %}
+                {% raw %}{% include '{% endraw %}{{ mod.nav_extension}}{% raw %}' %}{% endraw %}
+              {% endif %}
+            {% endfor %}
+          <!-- End container-fluid -->
+          </div>
+        <!-- End centered-wrapper -->
+        </div>
+      <!-- End Navbar-->
+      </nav>
+      {# Escape jinja2 code #}
+      {% raw %}
+      {% endblock %}
+      {# Content from child pages #}
+      {% block body %}
+      {% endblock %}
+      {% endraw %}
+    <!-- End expanding wrapper -->
+    </div>
+    <footer class="footer navbar-cyber">
+      <div class="centered-wrapper">
+        <div class="container-fluid">
+            2017 UAF Cyber Security Club
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

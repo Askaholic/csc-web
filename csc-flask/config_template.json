@@ -1,0 +1,5 @@
+{
+  "LDAP_SERVER": "ipa.demo1.freeipa.org",
+  "SQLALCHEMY_TRACK_MODIFICATIONS": false,
+  "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:"
+}

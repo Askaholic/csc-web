@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block body %}
+{% if csrf_token is not none %}
+<input type="hidden" id="token" value="{{ csrf_token }}"/>
+{% endif %}
+<div class="centered-wrapper">
+  <div class="col-md-3">
+    <div class="background">
+      <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#"><i class="glyphicon glyphicon-menu-hamburger"></i> Challenges</a></li>
+        {% for ch in challenges %}
+        <li><a href="{{ url_for('ctf.challenges', challenge_name=ch.name) }}" class="challenge-selector" data-target="#ctf-container" id="{{ ch.name }}">{{ ch.name }}</a></li>
+        {% endfor %}
+        {% if is_admin is defined and is_admin == true %}
+        <li>
+          <div class="text-center">
+              <button id="add-challenge" data-target="#ctf-container" class="btn btn-default btn-block" title="Create a new CTF" data-toggle="tooltip" data-placement="bottom" href="{{ url_for('ctf.get_ctf_form') }}">New CTF</button>
+          </div>
+        </li>
+        {% endif %}
+      </ul>
+    </div>
+  <!-- End first column -->
+  </div>
+  <div class="col-md-9">
+    <div class="background">
+      <h1>Challenges</h1>
+      <div id="ctf-container">
+        {% if ctf_name is defined %}
+          {% include 'ctf/flags.html' %}
+        {% else %}
+          <p>Select a challenge to begin.</p>
+        {% endif %}
+      </div>
+    </div>
+  <!-- End second column -->
+  </div>
+<!-- End centered-wrapper -->
+</div>
+{% endblock %}

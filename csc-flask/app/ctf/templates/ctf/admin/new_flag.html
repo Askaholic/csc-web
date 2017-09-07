@@ -1,0 +1,36 @@
+<hr/>
+<a class="glyphicon glyphicon-arrow-left button-clicker gi-2x gi-link" data-target="#{{ ctf_name }}" href="back"></a>
+<br/>
+<form method="post" action="{{ url_for('ctf.add_flag') }}">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
+      <input type="text" class="form-control" name="name"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="name">Flag</label>
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-flag"></i></span>
+      <input type="text" class="form-control" id="flag" name="flag"/>
+      <div class="input-group-btn">
+        <button id="generate" class="btn btn-devault" data-target = "#flag"><i class="glyphicon glyphicon-repeat"></i></button>
+      </div>
+    </div>
+    <label for="points">Points</label>
+    <div class="input-group">
+      <span class="input-group-addon"><i class="glyphicon glyphicon-star"></i></span>
+      <input type="text" class="form-control" name="points"/>
+    </div>
+    <label for="desc">Description</label>
+    <textarea class="form-control" name="desc"></textarea>
+    <label for="desc">Hint</label>
+    <textarea class="form-control" name="hint"></textarea>
+  </div>
+  <input type="hidden" name="ctf" value="{{ ctf_name }}"/>
+  {% if csrf_token is not none %}
+  <input type="hidden" name="key" value="{{ csrf_token }}"/>
+  {% endif %}
+  <button type="submit" class="btn btn-default">Add</button>
+</form>

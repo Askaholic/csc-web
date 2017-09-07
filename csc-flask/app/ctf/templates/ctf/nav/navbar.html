@@ -1,0 +1,13 @@
+<li class="dropdown">
+  <a class="dropdown-toggle" data-toggle="dropdown" href="#">CTF
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu">
+    {% if session.user is defined %}
+      <li><a href="{{ url_for('ctf.challenges') }}">Challenges</a></li>
+      <li><a href="{{ url_for('ctf.scoreboard') }}">Scoreboard</a></li>
+    {% else %}
+      <li><a href="{{ url_for('ctf.login') }}">Log in</a></li>
+    {% endif %}
+  </ul>
+</li>

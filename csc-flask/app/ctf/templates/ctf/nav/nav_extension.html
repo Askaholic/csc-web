@@ -1,0 +1,5 @@
+{% if session.user is defined %}
+<div class="navbar-text pull-right">
+  Welcome {{ session.user }}! <a href="{{ url_for('ctf.logout') }}">Log out</a>
+</div>
+{% endif %}
